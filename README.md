@@ -1,4 +1,4 @@
-# MHU Dart Commons
+# MHU Dart Sourcegen
 
 Dart source code generation utilities.
 
