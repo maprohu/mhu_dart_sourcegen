@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:dart_style/dart_style.dart';
 
@@ -129,9 +130,15 @@ extension DartTypeX on DartType {
 
     switch (self) {
       case InterfaceType():
-        return element!.name!.plus(self.typeArguments
-            .map((e) => e.substituteTypeArgs(map))
-            .joinInChevronOrEmpty());
+        return element!.name!
+            .plus(
+              self.typeArguments
+                  .map((e) => e.substituteTypeArgs(map))
+                  .joinInChevronOrEmpty(),
+            )
+            .plus(
+              self.nullabilitySuffix.dartSuffix,
+            );
       case TypeParameterType():
         final name = self.element.name;
         return map[name] ?? getDisplayString(withNullability: true);
@@ -150,4 +157,12 @@ extension SrcgenListOfStringX on List<String> {
     if (length == 1) return first;
     return joinEnclosedOrEmpty(begin, end, separator);
   }
+}
+
+extension NullabilitySuffixX on NullabilitySuffix {
+  String get dartSuffix => switch (this) {
+        NullabilitySuffix.question => "?",
+        NullabilitySuffix.none => "",
+        NullabilitySuffix.star => "*",
+      };
 }
