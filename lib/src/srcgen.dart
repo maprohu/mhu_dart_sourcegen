@@ -27,12 +27,26 @@ extension SrcgenIterableOfStringX on Iterable<String> {
   String get joinLinesInCurlyOrEmpty => joinInCurlyOrEmpty('\n');
 
   Iterable<String> get plusCommas => map((e) => e.plusComma);
+
+  Iterable<String> enclosedIn(String begin, String end) sync* {
+    yield begin;
+    yield* this;
+    yield end;
+  }
+
+  Iterable<String> get enclosedInParen => enclosedIn("(", ")");
+
+  Iterable<String> get enclosedInCurly => enclosedIn("{", "}");
+
+  Iterable<String> get enclosedInBracket => enclosedIn("[", "]");
 }
 
 extension SrcgenStringX on String {
   String plus(String str) => "$this$str";
 
   String enclosed(String begin, String end) => "$begin$this$end";
+
+  String get unenclosed => substring(1, length - 1);
 
   String get inCurly => "{$this}";
 
@@ -145,6 +159,23 @@ extension DartTypeX on DartType {
     }
 
     return getDisplayString(withNullability: true);
+  }
+
+  Iterable<TypeParameterType> get findTypeParameters sync* {
+    final self = this;
+    switch (self) {
+      case TypeParameterType():
+        yield self;
+      case ParameterizedType():
+        for (final param in self.typeArguments) {
+          yield* param.findTypeParameters;
+        }
+      case FunctionType():
+        yield* self.returnType.findTypeParameters;
+        for (final parameter in self.parameters) {
+          yield* parameter.type.findTypeParameters;
+        }
+    }
   }
 }
 
