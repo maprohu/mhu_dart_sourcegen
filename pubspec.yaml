@@ -12,6 +12,7 @@ dependencies:
   pubspec_parse: ^1.2.3
   path: ^1.8.3
   analyzer: ^5.13.0
+  collection: ^1.17.2
 
 dev_dependencies:
   lints: ^2.0.0
