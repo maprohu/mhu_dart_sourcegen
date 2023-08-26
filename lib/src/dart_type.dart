@@ -7,8 +7,22 @@ extension DartTypeX on DartType {
     final alias = this.alias;
 
     if (alias == null) {
+      final self = this;
+
+      switch (self) {
+        case FunctionType():
+          yield* self.returnType.codeParts;
+          yield ' Function';
+          yield self.typeFormals.parametersDart;
+
+          yield* self.parameters.parameterListDartTypeCodeParts.enclosedInParen;
+
+          yield* nullabilitySuffix.suffixParts;
+        case _:
+          yield getDisplayString(withNullability: true);
+      }
+
       // TODO keep aliases recursively
-      yield getDisplayString(withNullability: true);
     } else {
       yield alias.element.displayName;
 
