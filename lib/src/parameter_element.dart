@@ -28,6 +28,19 @@ extension ParameterElementX on ParameterElement {
       ",",
     ];
   }
+  Iterable<String> get declareDartPartsUnnamed sync* {
+    final defaultValueCode = this.defaultValueCode;
+    yield* [
+      ...type.codeParts,
+      " ",
+      name,
+      if (defaultValueCode != null) ...[
+        "=",
+        defaultValueCode,
+      ],
+      ",",
+    ];
+  }
 }
 
 extension IterableOfParameterElementX on Iterable<ParameterElement> {
