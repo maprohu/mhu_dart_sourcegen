@@ -102,6 +102,10 @@ extension StringsX on Strings {
   Iterable<String> get enclosedInParen => enclosedIn("(", ")");
 
   Iterable<String> get enclosedInCurly => enclosedIn("{", "}");
+  Iterable<String> get enclosedInCurlyOrEmpty {
+    final list = toList();
+    return list.isEmpty ? list : list.enclosedIn("{", "}");
+  }
 
   Iterable<String> get enclosedInBracket => enclosedIn("[", "]");
   Iterable<String> get enclosedInChevron => enclosedIn("<", ">");

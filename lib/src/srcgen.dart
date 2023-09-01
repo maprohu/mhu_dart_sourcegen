@@ -84,3 +84,5 @@ extension NullabilitySuffixX on NullabilitySuffix {
     }
   }
 }
+
+T run<T>(T Function() fn) => fn();
