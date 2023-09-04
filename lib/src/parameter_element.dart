@@ -67,7 +67,7 @@ extension IterableOfParameterElementX on Iterable<ParameterElement> {
       if (firstSpecialParam.isNamed) {
         yield* specials.enclosedInCurly;
       } else {
-        yield* specials.enclosedInBracket;
+        yield* specials.enclosedInSquareBracket;
       }
     }
   }
