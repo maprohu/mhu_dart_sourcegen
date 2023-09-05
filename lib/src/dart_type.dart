@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:mhu_dart_sourcegen/mhu_dart_sourcegen.dart';
@@ -59,6 +60,7 @@ extension DartTypeX on DartType {
     switch (self) {
       case TypeParameterType():
         yield self;
+        yield* self.bound.findTypeParameters;
       case ParameterizedType():
         for (final param in self.typeArguments) {
           yield* param.findTypeParameters;
@@ -67,6 +69,11 @@ extension DartTypeX on DartType {
         yield* self.returnType.findTypeParameters;
         for (final parameter in self.parameters) {
           yield* parameter.type.findTypeParameters;
+        }
+        for (final TypeParameterElement(:bound) in self.typeFormals) {
+          if (bound != null) {
+            yield* bound.findTypeParameters;
+          }
         }
     }
   }
